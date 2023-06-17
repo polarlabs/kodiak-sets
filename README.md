@@ -35,8 +35,8 @@
 [crates.io Latest]: https://img.shields.io/crates/v/kodiak-sets?label=latest&logo=docs.rs&style=flat-square
 [crates]: https://crates.io/crates/kodiak-sets
 
-[crates.io License]: https://img.shields.io/crates/l/kodiak-sets?color=007ec6&style=flat-square
-[GitHub License]: https://img.shields.io/github/license/polarlabs/kodiak-sets?color=007ec6&style=flat-square
+[crates.io License]: https://img.shields.io/crates/l/kodiak-sets?logo=docs.rs&color=007ec6&style=flat-square
+[GitHub License]: https://img.shields.io/github/license/polarlabs/kodiak-sets?logo=github&color=007ec6&style=flat-square
 [license-mit]: https://choosealicense.com/licenses/mit/
 [license-apache]: https://choosealicense.com/licenses/apache-2.0/
 
@@ -44,13 +44,13 @@
 [docs.rs]: https://img.shields.io/docsrs/kodiak-sets?logo=docs.rs&style=flat-square
 [docs]: https://docs.rs/kodiak-sets
 
-[GitHub Build Status]: https://img.shields.io/github/workflow/status/polarlabs/kodiak-sets/workflow-cargo-test?logo=github&label=tests&style=flat-square
+[GitHub Build Status]: https://img.shields.io/github/actions/workflow/status/polarlabs/kodiak-sets/cargo-test.yml?branch=main&logo=github&label=tests&style=flat-square
 [github-actions-cargo-test]: https://github.com/polarlabs/kodiak-sets/actions/workflows/cargo-test.yml
 
-[GitHub Security Schedule]: https://img.shields.io/github/workflow/status/polarlabs/kodiak-sets/workflow-cargo-audit-on-schedule?logo=clockify&logoColor=ffffff&label=security%20audit&style=flat-square
+[GitHub Security Schedule]: https://img.shields.io/github/actions/workflow/status/polarlabs/kodiak-sets/cargo-audit-on-schedule.yml?branch=main&logo=clockify&logoColor=ffffff&label=security%20audit%20(scheduled%20daily)&style=flat-square
 [github-actions-cargo-audit-on-schedule]: https://github.com/polarlabs/kodiak-sets/actions/workflows/cargo-audit-on-schedule.yml
 
-[GitHub Security Push]: https://img.shields.io/github/workflow/status/polarlabs/kodiak-sets/workflow-cargo-audit-on-push?logo=github&label=security%20audit&style=flat-square
+[GitHub Security Push]: https://img.shields.io/github/actions/workflow/status/polarlabs/kodiak-sets/cargo-audit-on-push.yml?branch=main&logo=github&label=security%20audit%20(on%20push)&style=flat-square
 [github-actions-cargo-audit-on-push]: https://github.com/polarlabs/kodiak-sets/actions/workflows/cargo-audit-on-push.yml
 
 [GitHub Top Language]: https://img.shields.io/github/languages/top/polarlabs/kodiak-sets?color=dea584&logo=rust&style=flat-square

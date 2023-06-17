@@ -18,6 +18,11 @@ Collection of useful rustdoc options awaiting their implementation.
 #![deny(clippy::all)]
 #![deny(warnings)]
 
+//! Get things organized with these powerful, yet easy to use sets. For the time being,
+//! `kodiak-sets` offers a `Sequence`, which is an ordered sets of elements, with each
+//! element at a unique position. `Sequence` allows to add and remove elements at
+//! any position, virtually infinitely.
+
 // Keep crate's module structure completely private, see public re-exports below.
 // (also hides modules from crate documentation)
 mod position;

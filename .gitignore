@@ -1,0 +1,9 @@
+/target
+/Cargo.lock
+.idea
+kodiak-sets.iml
+
+# Build artifacts in examples
+/examples/*/target
+test.db
+test.db-*

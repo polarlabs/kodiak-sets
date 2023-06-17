@@ -1,0 +1,38 @@
+[package]
+name = "kodiak-sets"
+version = "0.1.0"
+authors = ["Tobias Mucke <tobias.mucke@gmail.com", ]
+description = "A library to manage generic sets supporting unique features."
+categories = ["data-structures"]
+keywords = ["set", "sequence", "generic"]
+homepage = "https://github.com/polarlabs"
+documentation = "https://docs.rs/kodiak-sets"
+repository = "https://github.com/polarlabs/kodiak-sets"
+readme = "README.md"
+edition = "2021"
+license = "MIT / Apache-2.0"
+
+# Exclude files from publishing to crates.io
+exclude = [".github"]
+
+# Disable autodiscovery for tests, use test target (see below)
+autotests = false
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+num-integer = "0.1.45"
+
+# Required for integration tests
+[dev-dependencies]
+
+
+# Dedicated target for tests to avoid having one crate per test file, allows code sharing across multiple test files
+# How to run tests:
+# - all tests: `cargo test`
+# - unit tests only: `cargo test --lib`
+# - integration tests only: `cargo test --test integration`
+# - doc tests only: `cargo test --doc`
+#[[test]]
+#name = "integration"
+#path = "tests/lib.rs"

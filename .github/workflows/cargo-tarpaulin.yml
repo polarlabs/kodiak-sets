@@ -15,7 +15,7 @@ jobs:
 
       - name: check-coverage
         run: |
-          cargo tarpaulin --verbose --all-features --ignore-tests --workspace --timeout 120 --fail-under 100 --out Xml
+          cargo tarpaulin --engine llvm --workspace --all-features --ignore-tests --verbose --timeout 120 --fail-under 100 --out Xml
 
       - name: report-coverage
         uses: codecov/codecov-action@v3

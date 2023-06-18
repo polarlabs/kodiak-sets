@@ -6,21 +6,16 @@ env:
 jobs:
   cargo-tarpaulin:
     runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:latest
+      options: --security-opt seccomp=unconfined
     steps:
       - name: checkout-repo
         uses: actions/checkout@v3
 
-      - name: install-toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-
       - name: check-coverage
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          version: 0.22.0
-          args: --ignore-tests --out Xml --fail-under 100
+        run: |
+          cargo tarpaulin --verbose --all-features --ignore-tests --workspace --timeout 120 --fail-under 100 --out Xml
 
       - name: report-coverage
         uses: codecov/codecov-action@v3

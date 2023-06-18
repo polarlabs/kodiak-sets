@@ -7,3 +7,6 @@ kodiak-sets.iml
 /examples/*/target
 test.db
 test.db-*
+
+# Test artifacts
+cobertura.xml

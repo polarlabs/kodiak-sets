@@ -159,6 +159,23 @@ impl<T> IndexMut<usize> for Sequence<T> {
     }
 }
 
+impl<T: Clone> Clone for Sequence<T> {
+    fn clone(&self) -> Self {
+        let mut n = 0;
+        let mut seq: Sequence<T> = Sequence::new();
+
+        while n < self.len() {
+            let pos = self.positions[n];
+            let element = self.elements[n].clone();
+
+            seq.insert_at(pos, element);
+            n += 1;
+        }
+
+        seq
+    }
+}
+
 /*
 impl<T> Iterator for Sequence<T> {
     type Item = (u64, u64, T);

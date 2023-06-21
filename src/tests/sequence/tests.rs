@@ -191,4 +191,13 @@ mod tests {
 
         assert_eq!(seq[0], "_H".to_string());
     }
+
+    #[test]
+    fn test_trait_impl_clone() {
+        let seq = setup_seq_abc();
+        let seq2 = seq.clone();
+
+        assert_eq!(seq.len(), seq2.len());
+        assert_eq!(seq, seq2);
+    }
 }

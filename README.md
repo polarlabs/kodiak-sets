@@ -132,8 +132,9 @@ Demonstrate capabilities!
 
 ## Version 0.2.0 (planned)
 - Support iterators for `Sequence`
+- Support the trait `Clone`
 
-## Version 0.1.0 (in progress)
+## Version 0.1.0 (delivered)
 - Initial release.
 - Examples to demonstrate the power of fraction based positioning.
 - Examples showing how to use this library with SQlite.

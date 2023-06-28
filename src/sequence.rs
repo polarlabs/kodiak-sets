@@ -6,7 +6,19 @@ use crate::position::Min;
 use crate::Position;
 use std::ops::{Index, IndexMut};
 
+#[cfg(feature = "serde-derive")]
+use serde::{Deserialize, Serialize};
+
+#[cfg(not(feature = "serde-derive"))]
 #[derive(Debug, PartialEq)]
+pub struct Sequence<T> {
+    positions: Vec<Position>,
+    elements: Vec<T>,
+    current_index: usize,
+}
+
+#[cfg(feature = "serde-derive")]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Sequence<T> {
     positions: Vec<Position>,
     elements: Vec<T>,

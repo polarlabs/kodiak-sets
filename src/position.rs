@@ -2,6 +2,9 @@
 #[path = "tests/position/tests.rs"]
 mod tests;
 
+#[cfg(feature = "serde-derive")]
+use serde::{Deserialize, Serialize};
+
 use num_integer::gcd;
 
 use std::cmp::Ordering;
@@ -10,7 +13,15 @@ use std::ops::AddAssign;
 
 const DENOMINATOR_MIN: u64 = 1;
 
+#[cfg(not(feature = "serde-derive"))]
 #[derive(Copy, Clone)]
+pub struct Position {
+    pub(crate) numerator: u64,
+    pub(crate) denominator: u64,
+}
+
+#[cfg(feature = "serde-derive")]
+#[derive(Serialize, Deserialize, Copy, Clone)]
 pub struct Position {
     pub(crate) numerator: u64,
     pub(crate) denominator: u64,

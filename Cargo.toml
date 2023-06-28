@@ -19,9 +19,18 @@ exclude = [".github"]
 autotests = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = [ "std" ]
+serde-derive = [ "serde/derive", "serde/std" ]
+std = [ ]
 
-[dependencies]
-num-integer = "0.1.45"
+[dependencies.num-integer]
+version = "0.1.45"
+
+[dependencies.serde]
+version = "1.0.164"
+default-features = false
+optional = true
 
 # Required for integration tests
 [dev-dependencies]

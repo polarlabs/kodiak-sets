@@ -130,8 +130,9 @@ Demonstrate capabilities!
 ## Version 0.3.0 (planned)
 - Example showing how to use this library with PostgreSQL.
 
-## Version 0.2.0 (planned)
+## Version 0.2.0 (in progress)
 - Support iterators for `Sequence`
+- Support serde's `#[derive(Serialize, Deserialize)]`
 - Support the trait `Clone`
 
 ## Version 0.1.0 (delivered)

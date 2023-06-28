@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-kodiak-sets = { path = "../../", version = "0.1.0" }
+kodiak-sets = { path = "../../" }
 sqlx = { version = "0.6.3", features = ["macros", "runtime-actix-rustls", "sqlite", "uuid"] }
 uuid = { version = "1.3.3", features = ["v4", "fast-rng"] }
 tokio = { version = "1.27.0", features = ["macros", "rt-multi-thread"] }

@@ -16,11 +16,14 @@ elements at positions 1/1 and 2/1, is 3/2.
 
 Spoiler: kodiak-sets::sequence allows 79.999.979 insertions.
 
+### [seq-fraction-psql](seq-fraction-psql)
+
+Planned for a later version. Have a look at the roadmap.
+
 ### [seq-fraction-sqlite](seq-fraction-sqlite)
 
 Interested in how to use kodiak-sets::sequence with sqlite? Have a look at this example.
 
-### [seq-fraction-psql](seq-fraction-psql)
+### [seq-using-serde-derive](seq-using-serde-derive)
 
-Planned for a later version. Have a look at the roadmap.
-    
+Shows how to leverage serde's `#[derive(Serialize, Deserialize)]` for a sequence.

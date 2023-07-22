@@ -32,12 +32,13 @@ async fn main() {
         seq.insert(n, "A".to_string());
     }
 
-    n = 0;
-    while n <= seq.len() {
-            if let Some((numerator, denominator, payload)) = seq.non_iterating_next() {
-            insert(&pool, numerator, denominator, payload).await.unwrap();
-        };
-        n += 1;
+    for node in seq {
+        match node.element_ref() {
+            None => {},
+            Some(element) => {
+                insert(&pool, node.numerator(), node.denominator(), element.as_str()).await.unwrap();
+            }
+        }
     }
 }
 
@@ -47,8 +48,8 @@ async fn insert(pool: &SqlitePool, n: u64, d: u64, payload: &str) -> Result<(), 
 
     let result = sqlx::query!(
         r#"INSERT INTO sequence
-                       (numerator,   denominator, payload)
-                VALUES ($1,         $2,           $3);"#,
+                       (numerator, denominator, payload)
+                VALUES ($1,        $2,          $3);"#,
         numerator,
         denominator,
         payload

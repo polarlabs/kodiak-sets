@@ -128,12 +128,15 @@ Demonstrate capabilities!
 - Example showing how to use this library with MySQL.
 
 ## Version 0.3.0 (planned)
+- Reimplement using std::collections::BTreeMap.
+- Complete docs `#![deny(missing_docs)]`.
 - Example showing how to use this library with PostgreSQL.
 
-## Version 0.2.0 (in progress)
-- Support iterators for `Sequence`
-- Support serde's `#[derive(Serialize, Deserialize)]`
-- Support the trait `Clone`
+## Version 0.2.0 (delivered)
+- Implement `Iterator` and `IntoIterator` for `Sequence`.
+- Support serde's `#[derive(Serialize, Deserialize)]`.
+- Support the trait `Clone`.
+- Introduce benchmarking and publish results on GitHub.
 
 ## Version 0.1.0 (delivered)
 - Initial release.
@@ -160,17 +163,27 @@ Metric output format: x/y
     y = total unsafe code found in the crate
 
 Symbols: 
-    :) = No `unsafe` usage found, declares #![forbid(unsafe_code)]
-    ?  = No `unsafe` usage found, missing #![forbid(unsafe_code)]
-    !  = `unsafe` usage found
+    🔒  = No `unsafe` usage found, declares #![forbid(unsafe_code)]
+    ❓  = No `unsafe` usage found, missing #![forbid(unsafe_code)]
+    ☢️  = `unsafe` usage found
 
 Functions  Expressions  Impls  Traits  Methods  Dependency
 
-0/0        0/0          0/0    0/0     0/0      :) kodiak-sets 0.1.0
-0/0        0/0          0/0    0/0     0/0      ?  └── num-integer 0.1.45
-0/0        6/12         0/0    0/0     0/0      !      └── num-traits 0.2.15
+0/0        0/0          0/0    0/0     0/0      🔒  kodiak-sets 0.1.0
+0/0        0/0          0/0    0/0     0/0      ❓  ├── num-integer 0.1.45
+0/0        6/12         0/0    0/0     0/0      ☢️  │   └── num-traits 0.2.15
+0/0        5/5          0/0    0/0     0/0      ☢️  └── serde 1.0.164
+0/0        0/0          0/0    0/0     0/0      ❓      └── serde_derive 1.0.164
+0/0        15/15        0/0    0/0     3/3      ☢️          ├── proc-macro2 1.0.63
+0/0        4/4          0/0    0/0     0/0      ☢️          │   └── unicode-ident 1.0.9
+0/0        0/0          0/0    0/0     0/0      ❓          ├── quote 1.0.28
+0/0        15/15        0/0    0/0     3/3      ☢️          │   └── proc-macro2 1.0.63
+0/0        79/79        3/3    0/0     2/2      ☢️          └── syn 2.0.22
+0/0        15/15        0/0    0/0     3/3      ☢️              ├── proc-macro2 1.0.63
+0/0        0/0          0/0    0/0     0/0      ❓              ├── quote 1.0.28
+0/0        4/4          0/0    0/0     0/0      ☢️              └── unicode-ident 1.0.9
 
-0/0        6/12         0/0    0/0     0/0
+0/0        109/115      3/3    0/0     5/5    
 ```
 
 ## License

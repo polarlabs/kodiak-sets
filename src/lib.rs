@@ -1,5 +1,5 @@
 #![forbid(unsafe_code)]
-// todo: #![deny(missing_docs)]
+//#![deny(missing_docs)]
 // Lints for rustdoc
 #![deny(rustdoc::missing_crate_level_docs)]
 #![deny(rustdoc::broken_intra_doc_links)]
@@ -20,18 +20,15 @@ Collection of useful rustdoc options awaiting their implementation.
 
 //! Get things organized with these powerful, yet easy to use sets. For the time being,
 //! `kodiak-sets` offers a `Sequence`, which is an ordered sets of elements, with each
-//! element at a unique position. `Sequence` allows to add and remove elements at
-//! any position, virtually infinitely.
+//! element at a unique, distinguishable position.
 
 // Keep crate's module structure completely private, see public re-exports below.
 // (also hides modules from crate documentation)
-mod position;
-mod sequence;
-mod tests;
+pub mod sequence;
 
 // Re-exports for convenient use within crate.
-pub(crate) use crate::position::Position;
+// none
 
 // Publicly re-exporting all items valuable to users.
 // (avoids explicitly listing re-exports in crate documentation as there is no alternate path to those items)
-pub use crate::sequence::Sequence;
+// none

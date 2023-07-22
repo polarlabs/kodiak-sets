@@ -47,7 +47,7 @@ cargo publish
 On GitHub:
 
 * Create a tag with pattern vx.y.z
-* Release title: kodiak-sequence-vx.y.z
+* Release title: kodiak-sets-vx.y.z
 * Write some release notes (mainly inspired by roadmap and git log)
 
 # Links

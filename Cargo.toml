@@ -34,7 +34,12 @@ optional = true
 
 # Required for integration tests
 [dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+rand = "0.8.1"
 
+[[bench]]
+name = "inserts"
+harness = false
 
 # Dedicated target for tests to avoid having one crate per test file, allows code sharing across multiple test files
 # How to run tests:

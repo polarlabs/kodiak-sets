@@ -23,22 +23,21 @@ impl<T> Node<T> {
     fn new(position: Pos, element: T) -> Self {
         Node {
             position,
-            element: Some(element)
+            element: Some(element),
         }
     }
 
     #[inline]
     #[must_use]
     fn new_empty(position: Pos) -> Self {
-        Node {
-            position,
-            element: None
-        }
+        Node { position, element: None }
     }
 
     #[inline]
     #[must_use]
-    fn position(&self) -> Pos { self.position }
+    fn position(&self) -> Pos {
+        self.position
+    }
 
     #[inline]
     #[must_use]
@@ -48,15 +47,21 @@ impl<T> Node<T> {
 
     #[inline]
     #[must_use]
-    pub fn num(&self) -> u64 { self.position.num }
+    pub fn num(&self) -> u64 {
+        self.position.num
+    }
 
     #[inline]
     #[must_use]
-    pub fn denom(&self) -> u64 { self.position.denom }
+    pub fn denom(&self) -> u64 {
+        self.position.denom
+    }
 
     #[inline]
     #[must_use]
-    pub fn element(self) -> Option<T> { self.element }
+    pub fn element(self) -> Option<T> {
+        self.element
+    }
 
     #[inline]
     #[must_use]
@@ -98,10 +103,7 @@ trait Min {
 }
 
 impl Min for Pos {
-    const MIN: Pos = Pos {
-        num: u64::MIN,
-        denom: 1,
-    };
+    const MIN: Pos = Pos { num: u64::MIN, denom: 1 };
 }
 
 trait Max {
@@ -109,10 +111,7 @@ trait Max {
 }
 
 impl Max for Pos {
-    const MAX: Pos = Pos {
-        num: u64::MAX,
-        denom: 1,
-    };
+    const MAX: Pos = Pos { num: u64::MAX, denom: 1 };
 }
 
 impl Pos {
@@ -132,10 +131,7 @@ impl Pos {
     #[inline]
     #[must_use]
     fn n1d0() -> Self {
-        Self {
-            num: 1,
-            denom: 0,
-        }
+        Self { num: 1, denom: 0 }
     }
 
     #[inline]
@@ -167,7 +163,6 @@ impl Add for Pos {
 /// So, `Pos` does not follow the rules for adding fractions.
 impl AddAssign for Pos {
     #[inline]
-    #[must_use]
     fn add_assign(&mut self, rhs: Self) {
         *self = *self + rhs;
     }
@@ -186,15 +181,18 @@ impl PartialEq for Pos {
             // Position first by dividing numerator and denominator by the gcd.
             match (self_divisor, other_divisor) {
                 (1, 1) => false,
-                (_, 1) => { // marked for tarpaulin
+                (_, 1) => {
+                    // marked for tarpaulin
                     let f1 = Self::new(self.num / self_divisor, self.denom / self_divisor);
                     f1 == *other
                 }
-                (1, _) => { // marked for tarpaulin
+                (1, _) => {
+                    // marked for tarpaulin
                     let f2 = Self::new(other.num / other_divisor, other.denom / other_divisor);
                     f2 == *self
                 }
-                (_, _) => {  // marked for tarpaulin
+                (_, _) => {
+                    // marked for tarpaulin
                     let f1 = Self::new(self.num / self_divisor, self.denom / self_divisor);
                     let f2 = Self::new(other.num / other_divisor, other.denom / other_divisor);
                     f1 == f2
@@ -215,13 +213,7 @@ impl PartialOrd for Pos {
 
 impl Debug for Pos {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}/{} ({})",
-            self.num,
-            self.denom,
-            self.num as f64 / self.denom as f64
-        )
+        write!(f, "{}/{} ({})", self.num, self.denom, self.num as f64 / self.denom as f64)
     }
 }
 
@@ -305,7 +297,7 @@ impl<T> Sequence<T> {
     pub fn first(&self) -> Option<&T> {
         match self.nodes.first() {
             None => None,
-            Some(node) => node.element_as_ref()
+            Some(node) => node.element_as_ref(),
         }
     }
 
@@ -314,7 +306,7 @@ impl<T> Sequence<T> {
     pub fn last(&self) -> Option<&T> {
         match self.nodes.last() {
             None => None,
-            Some(node) => node.element_as_ref()
+            Some(node) => node.element_as_ref(),
         }
     }
 
@@ -326,7 +318,7 @@ impl<T> Sequence<T> {
     pub fn get(&self, index: usize) -> Option<&T> {
         match self.nodes.get(index) {
             None => None,
-            Some(node) => node.element_as_ref()
+            Some(node) => node.element_as_ref(),
         }
     }
 
@@ -335,7 +327,7 @@ impl<T> Sequence<T> {
     pub fn get_mut(&mut self, index: usize) -> Option<&mut T> {
         match self.nodes.get_mut(index) {
             None => None,
-            Some(node) => node.element_as_mut()
+            Some(node) => node.element_as_mut(),
         }
     }
 
@@ -370,7 +362,7 @@ impl<T> Sequence<T> {
                         _ => Pos::mid(
                             self.nodes.get(index - 1).map(|node| node.position()).unwrap(),
                             self.nodes.get(index).map(|node| node.position()).unwrap(),
-                        )
+                        ),
                     };
                     let node = Node::new(pos, element);
                     self.nodes.insert(index, node);
@@ -442,7 +434,8 @@ impl<T> Sequence<T> {
         } else {
             match self.nodes[index].element_as_ref() {
                 None => None,
-                Some(_) => {  // marked for tarpaulin
+                Some(_) => {
+                    // marked for tarpaulin
                     self.len -= 1;
                     let node = Node::new_empty(self.nodes[index].position());
                     self.nodes.push(node);
@@ -508,7 +501,7 @@ impl<T: Clone> Clone for Sequence<T> {
         for node in self {
             let node = match node.element_as_ref() {
                 None => Node::new_empty(node.position()),
-                Some(element) =>  Node::new(node.position(), element.clone())
+                Some(element) => Node::new(node.position(), element.clone()),
             };
             seq.nodes.push(node);
         }
@@ -542,12 +535,12 @@ impl<T> IntoIterator for Sequence<T> {
 
 // Iterator / IntoIterator over a `Sequence` represented by a slice of immutable `Option<&Node>`
 // - allows to use a Sequence in a for loop
-pub struct SequenceIterator<'iterator, T : 'iterator>(Option<&'iterator [Node<T>]>);
+pub struct SequenceIterator<'iterator, T: 'iterator>(Option<&'iterator [Node<T>]>);
 
 impl<'iterator, T: 'iterator> Iterator for SequenceIterator<'iterator, T> {
     type Item = &'iterator Node<T>;
 
-    fn next (self: &'_ mut SequenceIterator<'iterator, T>) -> Option<Self::Item> {
+    fn next(self: &'_ mut SequenceIterator<'iterator, T>) -> Option<Self::Item> {
         self.0.and_then(|v| {
             let (head, tail) = v.split_first()?;
             self.0 = Some(tail);
@@ -572,12 +565,12 @@ impl<'iterator, T: 'iterator> IntoIterator for &'iterator Sequence<T> {
 
 // Iterator / IntoIterator over a `Sequence` represented by a slice of mutable `Option<&mut Node>`
 // - allows to use a Sequence in a for loop
-pub struct SequenceIteratorMut<'iterator, T : 'iterator>(Option<&'iterator mut [Node<T>]>);
+pub struct SequenceIteratorMut<'iterator, T: 'iterator>(Option<&'iterator mut [Node<T>]>);
 
 impl<'iterator, T: 'iterator> Iterator for SequenceIteratorMut<'iterator, T> {
     type Item = &'iterator mut Node<T>;
 
-    fn next (self: &'_ mut SequenceIteratorMut<'iterator, T>) -> Option<Self::Item> {
+    fn next(self: &'_ mut SequenceIteratorMut<'iterator, T>) -> Option<Self::Item> {
         self.0.take().and_then(|v| {
             let (head, tail) = v.split_first_mut()?;
             self.0 = Some(tail);

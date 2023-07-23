@@ -37,7 +37,7 @@ mod tests {
 
     #[test]
     fn test_element_as_ref_none() {
-        let node: Node::<String> = Node::new_empty(Pos::default());
+        let node: Node<String> = Node::new_empty(Pos::default());
 
         assert_eq!(node.element_as_ref(), None);
     }
@@ -51,7 +51,7 @@ mod tests {
 
     #[test]
     fn test_element_as_mut_none() {
-        let mut node: Node::<String> = Node::new_empty(Pos::default());
+        let mut node: Node<String> = Node::new_empty(Pos::default());
 
         assert_eq!(node.element_as_mut(), None);
     }

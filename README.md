@@ -156,8 +156,8 @@ See [CONTRIBUTING](CONTRIBUTING.md) for more details.
 # Appendix
 
 ## Cargo Geiger Safety Report
-
 ```
+
 Metric output format: x/y
     x = unsafe code used by the build
     y = total unsafe code found in the crate
@@ -169,23 +169,23 @@ Symbols:
 
 Functions  Expressions  Impls  Traits  Methods  Dependency
 
-0/0        0/0          0/0    0/0     0/0      🔒  kodiak-sets 0.1.0
+0/0        0/0          0/0    0/0     0/0      🔒  kodiak-sets 0.2.0
 0/0        0/0          0/0    0/0     0/0      ❓  ├── num-integer 0.1.45
-0/0        6/12         0/0    0/0     0/0      ☢️  │   └── num-traits 0.2.15
-0/0        5/5          0/0    0/0     0/0      ☢️  └── serde 1.0.164
+0/0        0/12         0/0    0/0     0/0      ❓  │   └── num-traits 0.2.15
+0/0        0/5          0/0    0/0     0/0      ❓  └── serde 1.0.164
 0/0        0/0          0/0    0/0     0/0      ❓      └── serde_derive 1.0.164
-0/0        15/15        0/0    0/0     3/3      ☢️          ├── proc-macro2 1.0.63
-0/0        4/4          0/0    0/0     0/0      ☢️          │   └── unicode-ident 1.0.9
+0/0        0/15         0/0    0/0     0/3      ❓          ├── proc-macro2 1.0.63
+0/0        0/4          0/0    0/0     0/0      ❓          │   └── unicode-ident 1.0.9
 0/0        0/0          0/0    0/0     0/0      ❓          ├── quote 1.0.28
-0/0        15/15        0/0    0/0     3/3      ☢️          │   └── proc-macro2 1.0.63
-0/0        79/79        3/3    0/0     2/2      ☢️          └── syn 2.0.22
-0/0        15/15        0/0    0/0     3/3      ☢️              ├── proc-macro2 1.0.63
+0/0        0/15         0/0    0/0     0/3      ❓          │   └── proc-macro2 1.0.63
+0/0        0/79         0/3    0/0     0/2      ❓          └── syn 2.0.22
+0/0        0/15         0/0    0/0     0/3      ❓              ├── proc-macro2 1.0.63
 0/0        0/0          0/0    0/0     0/0      ❓              ├── quote 1.0.28
-0/0        4/4          0/0    0/0     0/0      ☢️              └── unicode-ident 1.0.9
+0/0        0/4          0/0    0/0     0/0      ❓              └── unicode-ident 1.0.9
 
-0/0        109/115      3/3    0/0     5/5    
+0/0        0/115        0/3    0/0     0/5    
+
 ```
-
 ## License
 
 Licensed under either of

@@ -24,11 +24,13 @@ Collection of useful rustdoc options awaiting their implementation.
 
 // Keep crate's module structure completely private, see public re-exports below.
 // (also hides modules from crate documentation)
-pub mod sequence;
+mod sequence;
 
 // Re-exports for convenient use within crate.
 // none
 
 // Publicly re-exporting all items valuable to users.
 // (avoids explicitly listing re-exports in crate documentation as there is no alternate path to those items)
-// none
+pub use sequence::Node;
+pub use sequence::Pos;
+pub use sequence::Sequence;

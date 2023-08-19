@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
-use kodiak_sets::sequence::Sequence;
+use kodiak_sets::Sequence;
 
 mod helper;
 use helper::next_ascii_char;
@@ -50,16 +50,24 @@ fn bench_seq_new_vs_with_capacity(c: &mut Criterion) {
     let mut group = c.benchmark_group("bench_new_vs_with_capacity");
     let n = 1_000_000;
 
-    group.bench_function(format!("seq new - insert {} chars", n).as_str(), |b| b.iter(|| seq_new_insert_at_last_index(black_box(n))));
-    group.bench_function(format!("seq with capacity - insert {} chars", n).as_str(), |b| b.iter(|| seq_with_capacity_insert_at_last_index(black_box(n))));
+    group.bench_function(format!("seq new - insert {} chars", n).as_str(), |b| {
+        b.iter(|| seq_new_insert_at_last_index(black_box(n)))
+    });
+    group.bench_function(format!("seq with capacity - insert {} chars", n).as_str(), |b| {
+        b.iter(|| seq_with_capacity_insert_at_last_index(black_box(n)))
+    });
 }
 
 fn bench_seq_vs_vec_new(c: &mut Criterion) {
     let mut group = c.benchmark_group("bench_seq_vs_vec_new");
     let n = 1_000_000;
 
-    group.bench_function(format!("vec new - insert {} chars", n).as_str(), |b| b.iter(|| vew_new_insert_at_last_index(black_box(n))));
-    group.bench_function(format!("seq new - insert {} chars", n).as_str(), |b| b.iter(|| seq_new_insert_at_last_index(black_box(n))));
+    group.bench_function(format!("vec new - insert {} chars", n).as_str(), |b| {
+        b.iter(|| vew_new_insert_at_last_index(black_box(n)))
+    });
+    group.bench_function(format!("seq new - insert {} chars", n).as_str(), |b| {
+        b.iter(|| seq_new_insert_at_last_index(black_box(n)))
+    });
 }
 
 criterion_group!(benches, bench_seq_new_vs_with_capacity, bench_seq_vs_vec_new);

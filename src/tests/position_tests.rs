@@ -1,7 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::sequence::sequence::Min;
-    use crate::sequence::Pos;
+    use crate::sequence::{Min, Pos};
 
     #[test]
     fn test_new_position_5_1() {
@@ -26,6 +25,7 @@ mod tests {
 
     #[test]
     fn test_new_position_1_0() {
+        // denom < DENOM_MIN
         let pos = Pos::new(1, 0);
 
         assert_eq!(pos, Pos { num: 1, denom: 1 });
@@ -53,13 +53,6 @@ mod tests {
     }
 
     #[test]
-    fn test_mid_min_1_1() {
-        let pos = Pos::new(1, 1);
-
-        assert_eq!(Pos::mid(Pos::MIN, pos), Pos { num: 1, denom: 2 });
-    }
-
-    #[test]
     fn test_mid_1_1_2_1() {
         let lhs = Pos::new(1, 1);
         let rhs = Pos::new(2, 1);
@@ -69,10 +62,19 @@ mod tests {
     }
 
     #[test]
+    fn test_mid_min_1_1() {
+        let pos = Pos::new(1, 1);
+
+        let mid = Pos::mid(Pos::MIN, pos);
+        assert_eq!(mid, Pos { num: 1, denom: 2 });
+    }
+
+    #[test]
     fn test_add_n1d1_n1d0() {
         let pos = Pos::new(1, 1);
 
-        assert_eq!(pos + Pos::n1d0(), Pos { num: 2, denom: 1 });
+        let add = pos + Pos::n1d0();
+        assert_eq!(add, Pos { num: 2, denom: 1 });
     }
 
     #[test]
@@ -98,12 +100,17 @@ mod tests {
     }
 
     #[test]
-    fn test_partial_eq_n1d1_n2d1() {
-        let pos1 = Pos::new(1, 1);
-        let pos2 = Pos::new(2, 1);
+    fn test_add_assign_n27d5_n110d1() {
+        let mut pos = Pos::new(27, 5);
+        pos += Pos::new(110, 1);
 
-        assert_eq!(pos1 == pos2, false);
-        assert_eq!(pos1 != pos2, true);
+        assert_eq!(
+            pos,
+            Pos {
+                num: 27 + 110,
+                denom: 5 + 1
+            }
+        );
     }
 
     #[test]
@@ -116,18 +123,27 @@ mod tests {
     }
 
     #[test]
-    fn test_partial_eq_n2d1_n4d2() {
-        let pos1 = Pos::new(2, 1);
-        let pos2 = Pos::new(4, 2);
+    fn test_partial_eq_n1d1_n2d1() {
+        let pos1 = Pos::new(1, 1);
+        let pos2 = Pos::new(2, 1);
 
-        assert_eq!(pos1 == pos2, true);
-        assert_eq!(pos1 != pos2, false);
+        assert_eq!(pos1 == pos2, false);
+        assert_eq!(pos1 != pos2, true);
     }
 
     #[test]
     fn test_partial_eq_n4d2_n2d1() {
         let pos1 = Pos::new(4, 2);
         let pos2 = Pos::new(2, 1);
+
+        assert_eq!(pos1 == pos2, true);
+        assert_eq!(pos1 != pos2, false);
+    }
+
+    #[test]
+    fn test_partial_eq_n2d1_n4d2() {
+        let pos1 = Pos::new(2, 1);
+        let pos2 = Pos::new(4, 2);
 
         assert_eq!(pos1 == pos2, true);
         assert_eq!(pos1 != pos2, false);
@@ -152,9 +168,9 @@ mod tests {
     }
 
     #[test]
-    fn test_debug() {
-        let pos1 = Pos::new(1, 1);
+    fn test_default() {
+        let pos = Pos::default();
 
-        println!("{:?}", pos1);
+        assert_eq!(pos, Pos::new(1, 1));
     }
 }

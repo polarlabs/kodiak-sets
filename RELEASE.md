@@ -2,8 +2,28 @@ Just a short checklist on merging a feature branch and publishing a release.
 
 # Merge a feature branch
 
-* Review CI results of to be merged feature branch
-* Merge feature branch
+* Test all examples.
+* Review CI results of to be merged feature branch.
+* Update benchmarks.
+
+```
+cargo criterion
+```
+
+* Review benchmark results and add benchmarks to repo.
+
+```
+cp -a target/criterion benchmarks/VERSION
+```
+
+* Commit changes to feature branch.
+
+```
+git add .
+git commit -m "feat!: ...add iterators and benchmarks."
+```
+
+* Merge feature branch.
 
 ```
 git checkout main
@@ -11,12 +31,13 @@ git merge --squash <FEATURE_BRANCH>
 ```
 
 * Change version in Cargo.toml
+* Update Geiger report in README
 
 ```
 cargo clean
 cargo geiger --all-features --output-format GitHubMarkdown --update-readme
 ```
- 
+
 * Review README.md
 * Update roadmap in README.md
 

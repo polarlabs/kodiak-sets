@@ -33,10 +33,10 @@ async fn main() {
     }
 
     for node in seq {
-        match node.element_ref() {
+        match node.element_as_ref() {
             None => {},
             Some(element) => {
-                insert(&pool, node.numerator(), node.denominator(), element.as_str()).await.unwrap();
+                insert(&pool, node.num(), node.denom(), element.as_str()).await.unwrap();
             }
         }
     }

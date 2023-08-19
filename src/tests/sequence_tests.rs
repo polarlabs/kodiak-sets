@@ -28,14 +28,14 @@ mod tests {
     }
 
     #[test]
-    fn test_new_sequence_empty() {
+    fn test_new_seq_empty() {
         let seq = setup_seq_empty();
 
         assert_eq!(seq.len(), 0);
     }
 
     #[test]
-    fn test_new_sequence_3() {
+    fn test_new_seq_3() {
         let seq = setup_seq_abc();
 
         assert_eq!(seq.len(), 3);
@@ -51,7 +51,7 @@ mod tests {
     }
 
     #[test]
-    fn test_first_none() {
+    fn test_first_none_seq_empty() {
         let seq = setup_seq_empty();
 
         assert_eq!(seq.first(), None);
@@ -65,6 +65,24 @@ mod tests {
     }
 
     #[test]
+    fn test_first_some_after_first_element_has_been_removed() {
+        let mut seq = setup_seq_abc();
+        let _node = seq.remove(0);
+
+        assert_eq!(seq.first(), Some(&"B".to_string()));
+    }
+
+    #[test]
+    fn test_first_none_after_all_nodes_have_been_removed() {
+        let mut seq = setup_seq_abc();
+        let _node = seq.remove(0);
+        let _node = seq.remove(0);
+        let _node = seq.remove(0);
+
+        assert_eq!(seq.first(), None);
+    }
+
+    #[test]
     fn test_last_none() {
         let seq = setup_seq_empty();
 
@@ -72,14 +90,32 @@ mod tests {
     }
 
     #[test]
-    fn test_last_some_t() {
+    fn test_last_none_after_all_nodes_have_been_removed() {
+        let mut seq = setup_seq_abc();
+        let _node = seq.remove(0);
+        let _node = seq.remove(0);
+        let _node = seq.remove(0);
+
+        assert_eq!(seq.last(), None);
+    }
+
+    #[test]
+    fn test_last_some() {
         let seq = setup_seq_abc();
 
         assert_eq!(seq.last(), Some(&"C".to_string()));
     }
 
     #[test]
-    fn test_get_some_t() {
+    fn test_last_some_after_last_node_has_been_removed() {
+        let mut seq = setup_seq_abc();
+        let _node = seq.remove(2);
+
+        assert_eq!(seq.last(), Some(&"B".to_string()));
+    }
+
+    #[test]
+    fn test_get_some() {
         let seq = setup_seq_abc();
 
         assert_eq!(seq.get(1), Some(&"B".to_string()));
@@ -90,18 +126,18 @@ mod tests {
         let mut seq = setup_seq_abc();
         seq.remove(1);
 
-        assert_eq!(seq.get(1), None);
+        assert_eq!(seq.get(1), Some(&"C".to_string()));
     }
 
     #[test]
     fn test_get_none_index_out_of_bounds() {
         let seq = setup_seq_abc();
 
-        assert_eq!(seq.get(4), None);
+        assert_eq!(seq.get(3), None);
     }
 
     #[test]
-    fn test_get_mut_some_t() {
+    fn test_get_mut_some() {
         let mut seq = setup_seq_abc();
 
         assert_eq!(seq.get_mut(1), Some(&mut "B".to_string()));
@@ -112,14 +148,14 @@ mod tests {
         let mut seq = setup_seq_abc();
         seq.remove(1);
 
-        assert_eq!(seq.get_mut(1), None);
+        assert_eq!(seq.get_mut(1), Some(&mut "C".to_string()));
     }
 
     #[test]
     fn test_get_mut_none_index_out_of_bounds() {
         let mut seq = setup_seq_abc();
 
-        assert_eq!(seq.get_mut(4), None);
+        assert_eq!(seq.get_mut(3), None);
     }
 
     #[test]
@@ -145,6 +181,7 @@ mod tests {
     #[test]
     fn test_len_seq_remove_element() {
         let mut seq = setup_seq_abc();
+
         seq.remove(1);
         assert_eq!(seq.len(), 2);
     }
@@ -174,67 +211,123 @@ mod tests {
     }
 
     #[test]
-    fn test_insert_into_empty_sequence() {
+    fn test_insert_index_eq_len_empty_seq() {
         let mut seq = setup_seq_empty();
+        let len = seq.len();
+
         seq.insert(0, "A".to_string());
 
-        assert_eq!(seq.len(), 1);
+        assert_eq!(seq.len(), len + 1);
         assert_eq!(seq.first(), Some(&"A".to_string()));
         assert_eq!(seq.last(), Some(&"A".to_string()));
     }
 
     #[test]
-    fn test_insert_into_non_empty_sequence_index_gt_len() {
-        let mut seq = setup_seq_abc();
-        seq.insert(8, "H".to_string());
+    fn test_insert_index_gt_len_empty_seq() {
+        let mut seq = setup_seq_empty();
+        let len = seq.len();
 
-        assert_eq!(seq.len(), 4);
-        assert_eq!(seq.get(3), Some(&"H".to_string()));
+        seq.insert(100, "A".to_string());
+
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.first(), Some(&"A".to_string()));
+        assert_eq!(seq.last(), Some(&"A".to_string()));
+    }
+
+    #[test]
+    fn test_insert_index_eq_len_non_empty_seq() {
+        let mut seq = setup_seq_abc();
+        let len = seq.len();
+
+        seq.insert(len, "H".to_string());
+
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.get(len), Some(&"H".to_string()));
         assert_eq!(seq.last(), Some(&"H".to_string()));
     }
 
     #[test]
-    fn test_insert_into_non_empty_sequence_index_0() {
+    fn test_insert_index_gt_len_non_empty_seq() {
         let mut seq = setup_seq_abc();
-        seq.insert(0, "_H".to_string());
+        let len = seq.len();
 
-        assert_eq!(seq.len(), 4);
-        assert_eq!(seq.get(0), Some(&"_H".to_string()));
-        assert_eq!(seq.first(), Some(&"_H".to_string()));
+        seq.insert(len + 100, "H".to_string());
+
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.get(len), Some(&"H".to_string()));
+        assert_eq!(seq.last(), Some(&"H".to_string()));
     }
 
     #[test]
-    fn test_insert_into_non_empty_sequence_index_1() {
+    fn test_insert_index_lt_len_node_is_some_index_eq_0() {
         let mut seq = setup_seq_abc();
-        seq.insert(1, "AA".to_string());
+        let len = seq.len();
 
-        assert_eq!(seq.len(), 4);
-        assert_eq!(seq.get(1), Some(&"AA".to_string()));
+        seq.insert(0, "H".to_string());
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.get(0), Some(&"H".to_string()));
+        assert_eq!(seq.first(), Some(&"H".to_string()));
     }
 
     #[test]
-    fn test_insert_into_non_empty_sequence_element_none() {
+    fn test_insert_index_lt_len_node_is_some_index_ne_0() {
         let mut seq = setup_seq_abc();
+        let len = seq.len();
+
+        seq.insert(1, "H".to_string());
+
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.get(1), Some(&"H".to_string()));
+    }
+
+    #[test]
+    fn test_insert_index_lt_len_node_is_none_index_ne_0() {
+        let mut seq = setup_seq_abc();
+        let len = seq.len();
 
         seq.remove(1);
-        assert_eq!(seq.len(), 2);
+        assert_eq!(seq.len(), len - 1);
 
-        seq.insert(1, "AA".to_string());
-        assert_eq!(seq.len(), 3);
-        assert_eq!(seq.get(1), Some(&"AA".to_string()));
+        seq.insert(1, "H".to_string());
+        assert_eq!(seq.len(), len);
+        assert_eq!(seq.get(1), Some(&"H".to_string()));
     }
 
     #[test]
-    fn test_insert_at_pos_into_non_empty_sequence() {
-        let mut seq = setup_seq_abc();
+    fn test_insert_at_empty_seq() {
+        let mut seq = setup_seq_empty();
+        let len = seq.len();
+
         seq.insert_at(Pos::new(4, 1), "D".to_string());
-
-        assert_eq!(seq.len(), 4);
-        assert_eq!(seq.get(3), Some(&"D".to_string()));
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.first(), Some(&"D".to_string()));
+        assert_eq!(seq.last(), Some(&"D".to_string()));
     }
 
     #[test]
-    fn test_insert_at_pos_into_non_empty_sequence_at_existing_middle_pos() {
+    fn test_insert_at_non_existing_pos_to_end_of_seq() {
+        let mut seq = setup_seq_abc();
+        let len = seq.len();
+
+        seq.insert_at(Pos::new(4, 1), "D".to_string());
+        assert_eq!(seq.len(), len + 1);
+        assert_eq!(seq.last(), Some(&"D".to_string()));
+    }
+
+    #[test]
+    fn test_insert_at_at_existing_but_vacant_pos() {
+        let mut seq = setup_seq_abc();
+        let len = seq.len();
+
+        let _node = seq.remove(1);
+
+        seq.insert_at(Pos::new(2, 1), "BB".to_string());
+        assert_eq!(seq.len(), len);
+        assert_eq!(seq.get(1), Some(&"BB".to_string()));
+    }
+
+    #[test]
+    fn test_insert_at_at_existing_pos_to_mid_of_seq() {
         let mut seq = setup_seq_abc();
         let len = seq.len();
 
@@ -244,7 +337,7 @@ mod tests {
     }
 
     #[test]
-    fn test_insert_at_pos_into_non_empty_sequence_at_existing_end_pos() {
+    fn test_insert_at_at_existing_pos_to_end_of_seq() {
         let mut seq = setup_seq_abc();
         let len = seq.len();
 
@@ -395,13 +488,14 @@ mod tests {
     }
 
     #[test]
-    fn test_remove_element_none() {
+    fn test_remove_index_two_times() {
         let mut seq = setup_seq_abc();
-        let _node = seq.remove(1);
         let len = seq.len();
 
-        assert_eq!(seq.remove(1), None);
-        assert_eq!(seq.len(), len);
+        let _node = seq.remove(1);
+
+        assert_eq!(seq.remove(1), Some("C".to_string()));
+        assert_eq!(seq.len(), len - 2);
     }
 
     #[test]
@@ -425,6 +519,21 @@ mod tests {
         let len = seq.len();
 
         assert_eq!(seq.remove(2), Some("C".to_string()));
+        assert_eq!(seq.len(), len - 1);
+    }
+
+    #[test]
+    fn test_remove_element_from_a_vacant_pos_followed_by_only_vacant_pos() {
+        let mut seq = setup_seq_abc();
+        let len = seq.len();
+
+        seq.push("D".to_string());
+        seq.push("E".to_string());
+        let _node = seq.remove(4);
+        let _node = seq.remove(3);
+        let _node = seq.remove(2);
+
+        assert_eq!(seq.remove(2), None);
         assert_eq!(seq.len(), len - 1);
     }
 
@@ -489,9 +598,9 @@ mod tests {
     #[test]
     fn test_trait_impl_index_mut() {
         let mut seq = setup_seq_abc();
-        seq[0].set("_H".to_string());
+        seq[0].set("H".to_string());
 
-        assert_eq!(seq[0].element_as_ref(), Some(&"_H".to_string()));
+        assert_eq!(seq[0].element_as_ref(), Some(&"H".to_string()));
     }
 
     #[test]
@@ -514,7 +623,7 @@ mod tests {
     }
 
     #[test]
-    fn test_trait_impl_into_iterator_t() {
+    fn test_trait_impl_into_iterator() {
         let mut seq = setup_seq_abc();
         seq.remove(1);
 

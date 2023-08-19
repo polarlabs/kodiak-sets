@@ -1,3 +1,12 @@
+//! `Sequence` is designed for use cases in which the elements' order has to get persisted
+//! but the chosen persistence layer requires metadata to do so, e.g. a database.
+//! `Sequence` allows to add and remove elements at any position, virtually infinitely.
+
+// Re-exports for convenient use within crate.
+// none
+
+// Publicly re-exporting all items valuable to users.
+// (avoids explicitly listing re-exports in crate documentation as there is no alternate path to those items)
 use std::cmp::Ordering;
 use std::fmt::{Debug, Formatter};
 use std::ops::{Add, AddAssign};
@@ -76,6 +85,18 @@ impl<T> Node<T> {
     }
 
     #[inline]
+    #[must_use]
+    pub fn is_none(&self) -> bool {
+        self.element.is_none()
+    }
+
+    #[inline]
+    #[must_use]
+    pub fn is_some(&self) -> bool {
+        self.element.is_some()
+    }
+
+    #[inline]
     fn set(&mut self, element: T) {
         self.element = Some(element)
     }
@@ -137,10 +158,7 @@ impl Pos {
     #[inline]
     #[must_use]
     fn mid(first: Self, second: Self) -> Self {
-        Self {
-            num: first.num + second.num,
-            denom: first.denom + second.denom,
-        }
+        first + second
     }
 }
 
@@ -181,18 +199,18 @@ impl PartialEq for Pos {
             // Position first by dividing numerator and denominator by the gcd.
             match (self_divisor, other_divisor) {
                 (1, 1) => false,
-                (_, 1) => {
-                    // marked for tarpaulin
+                #[rustfmt::skip]
+                (_, 1) => { // marked for tarpaulin
                     let f1 = Self::new(self.num / self_divisor, self.denom / self_divisor);
                     f1 == *other
                 }
-                (1, _) => {
-                    // marked for tarpaulin
+                #[rustfmt::skip]
+                (1, _) => { // marked for tarpaulin
                     let f2 = Self::new(other.num / other_divisor, other.denom / other_divisor);
                     f2 == *self
                 }
-                (_, _) => {
-                    // marked for tarpaulin
+                #[rustfmt::skip]
+                (_, _) => { // marked for tarpaulin
                     let f1 = Self::new(self.num / self_divisor, self.denom / self_divisor);
                     let f2 = Self::new(other.num / other_divisor, other.denom / other_divisor);
                     f1 == f2
@@ -276,62 +294,118 @@ impl<T> Sequence<T> {
         }
     }
 
+    /// Returns the total number of elements the sequence can
+    /// hold without reallocating.
     #[inline]
     pub fn capacity(&self) -> usize {
         self.nodes.capacity()
     }
 
+    /// Returns true if the sequence contains no elements.
     #[inline]
     pub fn is_empty(&self) -> bool {
-        self.nodes.is_empty()
+        self.len == 0
     }
 
+    /// Returns the number of elements in the sequence, also
+    /// referred to as its 'length'.
     #[inline]
-    /// Returns the number of elements in the `Sequence`
     pub fn len(&self) -> usize {
         self.len
     }
 
+    /// Returns the first element of the slice, or None
+    /// if it is empty.
     #[inline]
     #[must_use]
     pub fn first(&self) -> Option<&T> {
-        match self.nodes.first() {
-            None => None,
-            Some(node) => node.element_as_ref(),
+        if self.len == 0 {
+            return None;
+        }
+
+        for node in self.nodes.iter() {
+            if node.is_some() {
+                return node.element_as_ref();
+            }
+        }
+
+        #[cfg(not(tarpaulin_include))]
+        {
+            None
         }
     }
 
+    /// Returns the last element of the slice, or None
+    /// if it is empty.
     #[inline]
     #[must_use]
     pub fn last(&self) -> Option<&T> {
-        match self.nodes.last() {
-            None => None,
-            Some(node) => node.element_as_ref(),
+        if self.len == 0 {
+            return None;
+        }
+
+        for node in self.nodes.iter().rev() {
+            if node.is_some() {
+                return node.element_as_ref();
+            }
+        }
+
+        #[cfg(not(tarpaulin_include))]
+        {
+            None
         }
     }
 
     #[inline]
     #[must_use]
-    /// Returns Some<T>
-    /// Returns None when Node is empty
+    /// Returns `Some<T>`
     /// Returns None when out of bounds
     pub fn get(&self, index: usize) -> Option<&T> {
-        match self.nodes.get(index) {
-            None => None,
-            Some(node) => node.element_as_ref(),
+        if index >= self.len {
+            return None;
+        }
+
+        for node in self.nodes[index..].iter() {
+            if node.is_some() {
+                return node.element_as_ref();
+            }
+        }
+
+        #[cfg(not(tarpaulin_include))]
+        {
+            None
         }
     }
 
     #[inline]
     #[must_use]
+    /// Returns `Some<T>`
+    /// Returns None when out of bounds
     pub fn get_mut(&mut self, index: usize) -> Option<&mut T> {
-        match self.nodes.get_mut(index) {
-            None => None,
-            Some(node) => node.element_as_mut(),
+        if index >= self.len {
+            return None;
+        }
+
+        for node in self.nodes[index..].iter_mut() {
+            if node.is_some() {
+                return node.element_as_mut();
+            }
+        }
+
+        #[cfg(not(tarpaulin_include))]
+        {
+            None
         }
     }
 
+    /// Iterates the sequence searching for position.
+    /// Returns None if position is not in sequence.
+    /// Returns Some(index) if position is in sequence.
+    ///
+    /// # Panics
+    /// This function might panic if the iterator has more than usize::MAX non-matching elements.
     // todo: legacy!
+    // todo: cover panic!
     pub fn index_from(&self, position: Pos) -> Option<usize> {
         self.nodes.iter().position(|node| node.position() == position)
     }
@@ -342,32 +416,32 @@ impl<T> Sequence<T> {
     /// Remember: Index starts at 0.
     ///
     /// if node is empty (i.e. node.element == None) set node.element to Some(element).
-    /// if node is not empty (i.e. node.element == Some) insert elment into self.nodes.
+    /// if node is not empty (i.e. node.element == Some) insert element into self.nodes.
     ///
     /// # Panics
     /// Unlike `std::vec::Vec`, does not panic.
     pub fn insert(&mut self, index: usize, element: T) {
         if index >= self.nodes.len() {
-            // Append element (len is incremented by push()).
+            // Append element (self.len is incremented by push()).
             self.push(element);
         } else {
-            match self.nodes[index].element_as_ref() {
-                None => {
-                    self.nodes[index].set(element);
-                }
-                Some(_) => {
-                    let pos = match index {
-                        // unwrap() is safe because the prior if covered the self.len() == 0 case.
-                        0 => Pos::mid(Pos::MIN, self.nodes.first().map(|node| node.position()).unwrap()),
-                        _ => Pos::mid(
-                            self.nodes.get(index - 1).map(|node| node.position()).unwrap(),
-                            self.nodes.get(index).map(|node| node.position()).unwrap(),
-                        ),
-                    };
-                    let node = Node::new(pos, element);
-                    self.nodes.insert(index, node);
-                }
+            if self.nodes[index].is_some() {
+                let pos = if index == 0 {
+                    // unwrap() is safe because the prior if covered the self.len() == 0 case.
+                    Pos::mid(Pos::MIN, self.nodes.first().map(|node| node.position()).unwrap())
+                } else {
+                    Pos::mid(
+                        self.nodes.get(index - 1).map(|node| node.position()).unwrap(),
+                        self.nodes.get(index).map(|node| node.position()).unwrap(),
+                    )
+                };
+
+                let node = Node::new(pos, element);
+                self.nodes.insert(index, node);
+            } else {
+                self.nodes[index].set(element);
             }
+
             self.len += 1;
         }
     }
@@ -377,16 +451,19 @@ impl<T> Sequence<T> {
     // todo: use binary_search which required Ord for Position
     pub fn insert_at(&mut self, position: Pos, element: T) {
         match self.index_from(position) {
-            Some(index) => {
-                if self.nodes[index].element.is_none() {
-                    self.len += 1;
-                }
-                self.nodes[index].set(element);
-            }
-            None => {
+            None => { // marked for tarpaulin
                 let index = self.nodes.partition_point(|node| node.position() < position);
                 self.insert(index, element);
-            }
+            },
+            Some(index) => {
+                // If node does not contain an element, increase len before setting the element.
+                if self.nodes[index].is_none() {
+                    self.len += 1;
+                }
+
+                // Replace the prior element.
+                self.nodes[index].set(element);
+            },
         }
     }
 
@@ -429,19 +506,27 @@ impl<T> Sequence<T> {
     /// # Panics
     /// Unlike `std::vec::Vec`, does not panic.
     pub fn remove(&mut self, index: usize) -> Option<T> {
-        if index >= self.nodes.len() {
-            None
-        } else {
-            match self.nodes[index].element_as_ref() {
-                None => None,
-                Some(_) => {
-                    // marked for tarpaulin
-                    self.len -= 1;
-                    let node = Node::new_empty(self.nodes[index].position());
-                    self.nodes.push(node);
-                    self.nodes.swap_remove(index).element()
-                }
+        if index >= self.len {
+            return None;
+        }
+
+        for (i, node) in self.nodes[index..].iter().enumerate() {
+            if node.is_some() {
+                self.len -= 1;
+
+                // Push an empty node to the end of Vec self.nodes
+                // using the position of the node to be removed.
+                // Then swap the empty node with the node to remove.
+                // Finally, remove the node.
+                let node = Node::new_empty(self.nodes[index + i].position());
+                self.nodes.push(node);
+                return self.nodes.swap_remove(index + i).element();
             }
+        }
+
+        #[cfg(not(tarpaulin_include))]
+        {
+            None
         }
     }
 

@@ -452,7 +452,6 @@ impl<T> Sequence<T> {
     pub fn insert_at(&mut self, position: Pos, element: T) {
         match self.index_from(position) {
             None => {
-                // marked for tarpaulin
                 let index = self.nodes.partition_point(|node| node.position() < position);
                 self.insert(index, element);
             }

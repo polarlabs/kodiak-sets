@@ -9,6 +9,11 @@ No matter what you plan to do, make the preflight check.
 cargo criterion
 ```
 
+* Check the test coverage. Make sure to use LLVM as engine.
+```
+cargo tarpaulin --engine llvm
+```
+
 * Run the tests.
 ```
 cargo test

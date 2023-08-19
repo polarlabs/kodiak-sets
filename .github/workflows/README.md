@@ -19,6 +19,8 @@ Todo: cargo geiger
 
 [https://gist.github.com/LukeMathWalker/5ae1107432ce283310c3e601fac915f3|Github Actions by Luca Palmieri]
 
-[https://github.com/actions-rs|Rust support for Github Actions]
+[https://shift.click/blog/github-actions-rust/|A Few Github Action “Recipes” for Rust]
+
+[https://github.com/actions-rs|Rust support for Github Actions (unmaintained)]
 
 [https://github.com/codecov/codecov-action|Action for Codecov Integration]

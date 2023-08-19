@@ -451,10 +451,11 @@ impl<T> Sequence<T> {
     // todo: use binary_search which required Ord for Position
     pub fn insert_at(&mut self, position: Pos, element: T) {
         match self.index_from(position) {
-            None => { // marked for tarpaulin
+            None => {
+                // marked for tarpaulin
                 let index = self.nodes.partition_point(|node| node.position() < position);
                 self.insert(index, element);
-            },
+            }
             Some(index) => {
                 // If node does not contain an element, increase len before setting the element.
                 if self.nodes[index].is_none() {
@@ -463,7 +464,7 @@ impl<T> Sequence<T> {
 
                 // Replace the prior element.
                 self.nodes[index].set(element);
-            },
+            }
         }
     }
 

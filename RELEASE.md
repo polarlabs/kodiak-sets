@@ -1,9 +1,38 @@
 Just a short checklist on merging a feature branch and publishing a release.
 
+# Preflight check
+
+No matter what you plan to do, make the preflight check.
+
+* Run the benchmarks.
+```
+cargo criterion
+```
+
+* Run the tests.
+```
+cargo test
+```
+
+* Check the linter.
+```
+cargo clippy
+```
+
+* Fix formatting issues.
+```
+cargo fmt
+```
+
 # Merge a feature branch
 
+* Fix formatting issues.
+
+```
+cargo fmt
+```
+
 * Test all examples.
-* Review CI results of to be merged feature branch.
 * Update benchmarks.
 
 ```
@@ -20,9 +49,10 @@ cp -a target/criterion benchmarks/VERSION
 
 ```
 git add .
-git commit -m "feat!: ...add iterators and benchmarks."
+git commit -m "feat!: ... ."
 ```
 
+* Review CI results of to be merged feature branch.
 * Merge feature branch.
 
 ```

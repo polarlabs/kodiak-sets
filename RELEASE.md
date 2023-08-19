@@ -31,12 +31,6 @@ cargo fmt
 
 # Merge a feature branch
 
-* Fix formatting issues.
-
-```
-cargo fmt
-```
-
 * Test all examples.
 * Update benchmarks.
 

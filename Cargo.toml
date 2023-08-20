@@ -1,6 +1,6 @@
 [package]
 name = "kodiak-sets"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Tobias Mucke <tobias.mucke@gmail.com", ]
 description = "A library to manage generic sets supporting unique features."
 categories = ["data-structures"]
@@ -13,7 +13,10 @@ edition = "2021"
 license = "MIT / Apache-2.0"
 
 # Exclude files from publishing to crates.io
-exclude = [".github"]
+exclude = [
+    ".github",
+    "benchmarks",
+]
 
 # Disable autodiscovery for tests, use test target (see below)
 autotests = false
@@ -28,14 +31,14 @@ std = [ ]
 version = "0.1.45"
 
 [dependencies.serde]
-version = "1.0.164"
+version = "1.0.178"
 default-features = false
 optional = true
 
 # Required for integration tests
 [dev-dependencies]
 criterion = { version = "0.5.1", features = ["html_reports"] }
-rand = "0.8.1"
+rand = "0.8.5"
 
 [[bench]]
 name = "inserts"

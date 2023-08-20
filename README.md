@@ -72,7 +72,7 @@
 [Static unsafe]: https://img.shields.io/badge/unsafe-forbidden-success.svg?logo=rust&logoColor=ffffff&style=flat-square
 [unsafe]: (https://github.com/rust-secure-code/safety-dance/)
 
-Get things organized with these powerful, yet easy to use sets. The first set implemented in 0.1.0 is `Sequence`. 
+Get things organized with these powerful, yet easy to use sets. The first set implemented in 0.1.0 was `Sequence`. 
 From a generic perspective, sequences are ordered sets of elements, with each element at a unique position. `Sequence` allows 
 to add and remove elements at any position, virtually infinitely.
 
@@ -82,7 +82,7 @@ there are some challenges in practice:
 - How to store a sequence in a database and retrieve it efficiently?
 - How to add elements to a sequence at an arbitrary position efficiently, e.g. without having to change the position of all following elements?
 - How to change the position of a single element without the need to change other elements' positions?
-- How to avoid the need to rebalance the sequence, i.e. having to rewrite the position of all elements?
+- How to avoid the need to re-balance the sequence, i.e. having to rewrite the position of all elements?
 - How to scale the approach to hundreds of thousands of operations on the sequence, such as adding, moving and removing elements?
 
 The objective of `kodiak-sets` implementation of `Sequence` is to solve these challenges. In 0.1.0 it only offers support for `Sequence`. 
@@ -117,10 +117,10 @@ Provide additional examples in EXAMPLES.md and link to it.
 Demonstrate capabilities!
 
 # Known issues / limitations
-- 🏗️ Version 0.1.0 does not yet power other projects, so API has not yet proven it's power in practice.
+- 🏗️ Version 0.2.0 does not yet power other projects, so API has not yet proven it's power in practice.
 - 🚧 Code is fully covered by unit tests, however, some integration tests are still missing.
 - Documentation has still _some_ room for improvement.
-- 🐧 Version 0.1.x is developed and tested on Linux only.
+- 🐧 Version 0.2.x is developed and tested on Linux only.
 
 # Roadmap and future considerations
 
@@ -136,7 +136,7 @@ Demonstrate capabilities!
 - Implement `Iterator` and `IntoIterator` for `Sequence`.
 - Support serde's `#[derive(Serialize, Deserialize)]`.
 - Support the trait `Clone`.
-- Introduce benchmarking and publish results on GitHub.
+- Introduce benchmarking and publish results on GitHub (see benchmarks).
 
 ## Version 0.1.0 (delivered)
 - Initial release.
@@ -171,19 +171,11 @@ Functions  Expressions  Impls  Traits  Methods  Dependency
 
 0/0        0/0          0/0    0/0     0/0      🔒  kodiak-sets 0.2.0
 0/0        0/0          0/0    0/0     0/0      ❓  ├── num-integer 0.1.45
-0/0        0/12         0/0    0/0     0/0      ❓  │   └── num-traits 0.2.15
-0/0        0/5          0/0    0/0     0/0      ❓  └── serde 1.0.164
-0/0        0/0          0/0    0/0     0/0      ❓      └── serde_derive 1.0.164
-0/0        0/15         0/0    0/0     0/3      ❓          ├── proc-macro2 1.0.63
-0/0        0/4          0/0    0/0     0/0      ❓          │   └── unicode-ident 1.0.9
-0/0        0/0          0/0    0/0     0/0      ❓          ├── quote 1.0.28
-0/0        0/15         0/0    0/0     0/3      ❓          │   └── proc-macro2 1.0.63
-0/0        0/79         0/3    0/0     0/2      ❓          └── syn 2.0.22
-0/0        0/15         0/0    0/0     0/3      ❓              ├── proc-macro2 1.0.63
-0/0        0/0          0/0    0/0     0/0      ❓              ├── quote 1.0.28
-0/0        0/4          0/0    0/0     0/0      ❓              └── unicode-ident 1.0.9
+0/0        0/0          0/0    0/0     0/0      ❓  │   └── num-traits 0.2.16
+0/0        0/5          0/0    0/0     0/0      ❓  └── serde 1.0.183
+0/0        0/0          0/0    0/0     0/0      ❓      └── serde_derive 1.0.183
 
-0/0        0/115        0/3    0/0     0/5    
+0/0        0/5          0/0    0/0     0/0    
 
 ```
 ## License
